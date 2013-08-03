@@ -18,10 +18,11 @@ public class Var {
     private static int loginC;
     private static String status;
 
-    public static void setStartTime(long i){
-        startTime=i;
+    public static void setStartTime(long i) {
+        startTime = i;
     }
-    public static long getStartTime(){
+
+    public static long getStartTime() {
         return startTime;
 
     }
