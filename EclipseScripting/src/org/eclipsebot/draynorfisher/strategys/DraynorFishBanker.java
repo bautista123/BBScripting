@@ -1,40 +1,50 @@
-package org.eclipsebot.fisher.strategys;
+package org.eclipsebot.draynorfisher.strategys;
 
 import java.util.ArrayList;
 
 import org.demmonic.client.script.Script;
 import org.demmonic.client.script.Strategy;
+import org.demmonic.client.ui.ClientUI;
 import org.demmonic.client.wrappers.RS2ObjectWrapper;
-import org.eclipsebot.fisher.data.FisherVar;
+import org.eclipsebot.draynorfisher.data.DraynorFisherVar;
 
-public class FishBanker extends Strategy {
+public class DraynorFishBanker extends Strategy {
 	private Script script;
 
-	public FishBanker(Script script) {
+	public DraynorFishBanker(Script script) {
 		this.script = script;
 	}
 
 	public boolean shouldExecute() {
-		return script.inventory.isFull()
+		if(script.inventory.isFull() && DraynorFisherVar.getBank()==true
 				&& !script.game.getMyPlayer().isWalking()
 				&& script.getClient().isLoggedIn()
 				|| !script.inventory.contains(304)
-				&& script.getClient().isLoggedIn();
+				&& script.getClient().isLoggedIn()){
+			ClientUI.pushMessage("im here");
+			return true;
+		}else {
+			return false;
+		}
+		
 
 	}
 
 	public int execute() {
-		FisherVar.setStatus("Banking.");
+		DraynorFisherVar.setStatus("Banking.");
 		ArrayList<RS2ObjectWrapper> bankList = script.RS2Objects
 				.getRS2ObjectsForId(2213);
 		if (!script.bank.isOpen()) {
 			RS2ObjectWrapper bank = bankList.get(0);
 			bank.interact(900);
-			dynamicSleep(script.game.getMyPlayer().isWalking(), 4000);
+			dynamicSleep(2000, script.game.getMyPlayer().isWalking());
 			while (script.game.getMyPlayer().isWalking()) {
 				script.sleep(100);
+				if (!script.getClient().isLoggedIn()) {
+				    break;
+				   }
 			}
-			dynamicSleep(script.bank.isOpen(), 2000);
+			dynamicSleep(2000, script.bank.isOpen());
 			if (bankList.isEmpty()) {
 				return 100;
 			}
@@ -56,10 +66,13 @@ public class FishBanker extends Strategy {
 		return 100;
 	}
 
-	public void dynamicSleep(boolean condition, long sleepTime) {
+	public void dynamicSleep(long sleepTime, boolean...conditions) {
 		long endTime = (System.currentTimeMillis() + sleepTime);
-		while (!condition && (System.currentTimeMillis() < endTime)) {
+		while (System.currentTimeMillis() < endTime) {
 			script.sleep(50);
+			if (!script.getClient().isLoggedIn()) {
+			    break;
+			   }
 		}
 	}
 

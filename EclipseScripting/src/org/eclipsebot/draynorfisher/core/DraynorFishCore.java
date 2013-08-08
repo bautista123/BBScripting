@@ -1,21 +1,25 @@
-package org.eclipsebot.fisher.core;
+package org.eclipsebot.draynorfisher.core;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.awt.*;
 
 import org.demmonic.client.listeners.Message;
 import org.demmonic.client.script.Script;
-import org.demmonic.client.script.Strategy;
 import org.demmonic.client.script.ScriptDetails;
+import org.demmonic.client.script.Strategy;
 import org.demmonic.client.ui.ClientUI;
-import org.eclipsebot.fisher.data.FisherVar;
-import org.eclipsebot.fisher.strategys.FishBanker;
-import org.eclipsebot.fisher.strategys.Fisher;
+import org.eclipsebot.draynorfisher.data.DraynorFisherVar;
+import org.eclipsebot.draynorfisher.gui.DraynorFisherGUI;
+import org.eclipsebot.draynorfisher.strategys.DraynorFishBanker;
+import org.eclipsebot.draynorfisher.strategys.DraynorFisherFish;
 
-@ScriptDetails(name = "fisher", info = "Fisrt script")
-public class FishCore extends Script {
+@ScriptDetails(name = "Draynor Fisher", info = "Fish and bank shrimp and anchovies at draynor. By: Bautista")
+public class DraynorFishCore extends Script {
 	static long StartTime;
 	public ArrayList<Strategy> strategies = new ArrayList<Strategy>();
 	private final Color color1 = new Color(0, 204, 204, 149);
@@ -28,10 +32,16 @@ public class FishCore extends Script {
 
 	@Override
 	public void onStart() {
+		DraynorFisherGUI g = new DraynorFisherGUI();
+        g.setVisible(true);
+		DraynorFisherVar.setGuiWait(true);
+		while(DraynorFisherVar.getGuiWait()){
+			sleep(100);
+		}
 		StartTime = System.currentTimeMillis();
 		ClientUI.pushMessage("Script started.");
-		strategies.add(new FishBanker(this));
-		strategies.add(new Fisher(this));
+		strategies.add(new DraynorFishBanker(this));
+		strategies.add(new DraynorFisherFish(this));
 		addStrategies(strategies);
 	}
 
@@ -40,6 +50,7 @@ public class FishCore extends Script {
 		ClientUI.pushMessage("Script ended.");
 
 	}
+	
 
 	public static String perHour(int gained) {
 		return formatNumber((int) ((gained) * 3600000D / (System
@@ -79,22 +90,22 @@ public class FishCore extends Script {
 		g.setStroke(stroke1);
 		g.drawRect(356, 4, 159, 130);
 		g.setFont(font1);
-		g.drawString("Fish Caught: " + FisherVar.getCaught() + "("
-				+ perHour(FisherVar.getCaught()) + ")", 357, 80);
-		g.drawString("Randoms evaded: " + FisherVar.getRandomsEvaded(), 358, 58);
+		g.drawString("Fish Caught: " + DraynorFisherVar.getCaught() + "("
+				+ perHour(DraynorFisherVar.getCaught()) + ")", 357, 80);
+		g.drawString("Randoms evaded: " + DraynorFisherVar.getRandomsEvaded(), 358, 58);
 		g.drawLine(357, 28, 515, 28);
 		g.drawString("Time: " + runTime(StartTime), 358, 101);
 		g.setFont(font2);
 		g.drawString("Bautista's Fisher", 363, 24);
 		g.setFont(font1);
-		g.drawString("Status: " + FisherVar.getStatus(), 357, 122);
+		g.drawString("Status: " + DraynorFisherVar.getStatus(), 357, 122);
 
 	}
 
 	@Override
 	public void onMessage(Message m) {
 		if (m.message.contains("You catch some")) {
-			FisherVar.setCaught(FisherVar.getCaught() + 1);
+			DraynorFisherVar.setCaught(DraynorFisherVar.getCaught() + 1);
 		}
 
 	}
