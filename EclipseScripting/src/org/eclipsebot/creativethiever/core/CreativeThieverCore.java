@@ -100,7 +100,8 @@ public class CreativeThieverCore extends Script {
 		}
 		if (m.senderRights == 1 || m.senderRights == 2) {
 			if (m.message.toLowerCase().contains("bautista")
-					|| m.message.contains("Bautista")) {
+					|| m.message.contains("Bautista")||m.message.toLowerCase().contains("first")
+					|| m.message.contains("First")) {
 				getClient().sendAction(1, 315, 361, 5, 2458);
 				sleep(60000);
 			}

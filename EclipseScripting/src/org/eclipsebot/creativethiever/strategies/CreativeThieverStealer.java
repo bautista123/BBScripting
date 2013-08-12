@@ -1,7 +1,5 @@
 package org.eclipsebot.creativethiever.strategies;
 
-import java.util.ArrayList;
-
 import org.demmonic.client.api.Area;
 import org.demmonic.client.script.Script;
 import org.demmonic.client.script.Strategy;
@@ -11,7 +9,8 @@ import org.eclipsebot.creativethiever.data.CreativeThieverVar;
 
 public class CreativeThieverStealer extends Strategy {
 	private Script script;
-	public Area stallArea = new Area(2330, 3162, 2350, 3187);
+	/* public Area stallArea = new Area(2330, 3162, 2350, 3187); */
+	public Area stallArea = new Area(2333, 3158, 2353, 3186);
 
 	public CreativeThieverStealer(Script script) {
 		this.script = script;
@@ -19,16 +18,18 @@ public class CreativeThieverStealer extends Strategy {
 
 	@Override
 	public int execute() {
-		ArrayList<RS2ObjectWrapper> stallList = script.RS2Objects
+		RS2ObjectWrapper[] stallList = script.RS2Objects
 				.getRS2ObjectsForIds(4874);
-		if (stallList.isEmpty()) {
+		RS2ObjectWrapper[] stall = stallList;
+
+		if (stall == null) {
 			ClientUI.pushMessage("empty array");
 			script.sleep(100);
 		}
-		if (!stallList.isEmpty()) {
+		if (stall != null) {
 			CreativeThieverVar.setStatus("Stealing.");
-			RS2ObjectWrapper stall = stallList.get(0);
-			stall.interact(900);
+			script.getClient().sendAction(3, 900, stall[0].getUID(),
+					stall[0].getLocalX(), stall[0].getLocalY());
 			script.sleep(400);
 		}
 		return 100;
@@ -39,8 +40,8 @@ public class CreativeThieverStealer extends Strategy {
 
 		if (script.game.getMyPlayer().getAnimationId() == -1
 				&& !script.game.getMyPlayer().isWalking()
-				&& script.game.getOpenInterfaceId() == -1
 				&& !script.inventory.isFull()
+				&& script.game.getOpenInterfaceId() == -1
 				&& stallArea.contains(script.game.getMyPlayer())
 				&& !script.game.getMyPlayer().isUnderAttack()) {
 			return true;

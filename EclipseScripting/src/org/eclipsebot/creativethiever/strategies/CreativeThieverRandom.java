@@ -14,11 +14,11 @@ public class CreativeThieverRandom extends Strategy {
 		this.script = script;
 	}
 
-	public Area stallArea = new Area(2330, 3162, 2350, 3187);
+	public Area stallArea = new Area(2333, 3158, 2353, 3186);
 	private String[] helmNames = { "helm", "mask", "hood", "coif", "bandana",
 			"bandanna", "hat", "disguise", "boater", "mitre", "head",
 			"earmuffs", "tiara", "eye patch", "cavalier", "menap", "headgear",
-			"snelm","cap","goggles","beret"
+			"snelm", "cap", "goggles", "beret", "fez"
 
 	};
 
@@ -26,30 +26,30 @@ public class CreativeThieverRandom extends Strategy {
 			"2h", };
 
 	private String[] capeNames = { "cape", "cloak", "ava's",
-			"diving apparatus", "bonesack","grain"
+			"diving apparatus", "bonesack", "grain"
 
 	};
 
 	private int randomType = 0;
 
 	public boolean shouldExecute() {
-		return script.game.getOpenInterfaceId() == 4543
-				|| script.game.getOpenInterfaceId() == 15944
+		return script.game.getOpenInterfaceId() != -1
 				|| script.game.getOpenInterfaceId() == -1
 				&& !stallArea.contains(script.game.getMyPlayer())
-				|| script.game.getOpenInterfaceId() == -1
-				&& script.game.getMyPlayer().isUnderAttack();
+				|| script.game.getMyPlayer().isUnderAttack();
 	}
 
 	public int execute() {
-		if (script.game.getOpenInterfaceId() == -1
-				&& script.game.getMyPlayer().isUnderAttack()) {
+		if (script.game.getMyPlayer().isUnderAttack()) {
+			CreativeThieverVar.setStatus("Solving Random.");
+			script.getClient().sendAction(1, 315, 13261696, 457, 164);
+			script.sleep(500);
 			script.game.sendCommand("::home");
 			CreativeThieverVar.setRandomsEvaded(CreativeThieverVar
 					.getRandomsEvaded() + 1);
 		}
 		if (script.game.getOpenInterfaceId() == 15944) {
-			script.getClient().sendAction(1, 200, 64192512, 431, 15949);
+			script.game.sendAction(1, 200, 71, 0, 15949);
 		}
 		if (script.game.getOpenInterfaceId() == 4543) {
 			String randomItem1Name = script.getClient().getInterfaceCache()[4553]
@@ -80,7 +80,7 @@ public class CreativeThieverRandom extends Strategy {
 		}
 		if (script.game.getOpenInterfaceId() == -1
 				&& !stallArea.contains(script.game.getMyPlayer())) {
-			script.getClient().sendAction(1,646,444,283,153);
+			script.getClient().sendAction(1, 646, 444, 283, 153);
 			script.game.sendCommand("::home");
 			script.sleep(300);
 		}
@@ -89,8 +89,8 @@ public class CreativeThieverRandom extends Strategy {
 
 	public void solveRandom(String[] toMatch, String[] names) {
 		randomType = 0;
-
 		int stage = 0;
+
 		for (int p = 0; p < toMatch.length; p++) {
 			for (int j = 0; j < helmNames.length; j++) {
 				if (toMatch[p].toLowerCase().contains(helmNames[j])) {

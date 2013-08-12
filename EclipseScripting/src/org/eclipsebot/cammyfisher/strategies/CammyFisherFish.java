@@ -29,8 +29,8 @@ public class CammyFisherFish extends Strategy {
 	}
 
 	public int execute() {
-		ArrayList<RS2NPCWrapper> fishList = script.RS2NPCs.getNPCsForId(312);
-		if (fishList.isEmpty()) {
+		RS2NPCWrapper fishList[] = script.RS2NPCs.getNPCsForId(312);
+		if (fishList.length==-1) {
 			script.walking.walkPath(new Path(fishpath), false);
 			ClientUI.pushMessage("empty array");
 			return 500;
