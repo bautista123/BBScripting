@@ -1,0 +1,18 @@
+Card Array Subject: English
+____________________________________________________________
+Amount of Questions: 2
+Amount of Essay Questions: 0
+Amount of Broken Questions: 0
+Amount of Categories: 1
+____________________________________________________________
+
+Question: Ten Plagues
+Answer: decalogue list of 10 rules of moral behavior that god gave moses that are the basis for ethical conduct
+Category: Terms
+Essay Question Possibility: False
+____________________________________________________________
+Question: Canaan
+Answer: the promised land
+Category: Terms
+Essay Question Possibility: False
+____________________________________________________________
